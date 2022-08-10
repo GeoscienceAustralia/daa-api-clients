@@ -68,10 +68,10 @@ function make_query_fcs() {
 function make_query_topo_filter() {
     let geosparql;
     if (shape.includes('POINT')) {
-        geosparql = `    FILTER (geof:sfWithin("${shape}", ?wkt))`
+        geosparql = `    FILTER (geof:sfWithin("${shape}"^^geo:wktLiteral, ?wkt))`
     } else {
         if (document.getElementById('spatial-contains').checked) {
-            geosparql = `    FILTER (geof:sfContains("${shape}", ?wkt))`
+            geosparql = `    FILTER (geof:sfContains("${shape}"^^geo:wktLiteral, ?wkt))`
         } else {
             geosparql = `    FILTER (geof:sfOverlaps("${shape}", ?wkt))`
         }
@@ -85,7 +85,7 @@ export async function search() {
     if (!shape) {
         alert("You have not marked a point or a square on the map!")
     } else {
-        let endpoint = 'http://asgs.linked.fsdf.org.au/sparql'
+        let endpoint = 'https://linked.fsdf.org.au/sparql'
 
         let q =
 `PREFIX geo: <http://www.opengis.net/ont/geosparql#>

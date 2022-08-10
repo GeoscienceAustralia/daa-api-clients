@@ -19,7 +19,13 @@
                 <p>Mark a point or a bounding box on the map or <em>or</em> enter the IRI of an FSDF Feature to use its geometry.</p>
                 <input id="location-feature" type="text" style="width:400px" placeholder="https://linked.data.gov.au/dataset/..." />
                 <h4>2. Feature Collections</h4>
-                <p>Select Feature Collections you wish to search within.</p>
+                <p>Select Feature Collections you wish to search within:</p>
+                <input id="http://example.com/dataset/sandgate" type="checkbox" class="restriction-dataset" onchange="check(this, 'sandgate')" /> Sandgate demo dataset<br />
+                <input id="http://example.com/dataset/sandgate/catchments" type="checkbox" class="restriction-fc sandgate" /> Catchments<br />
+                <input id="http://example.com/dataset/sandgate/facilities" type="checkbox" class="restriction-fc sandgate" /> Facilities<br />
+                <input id="http://example.com/dataset/sandgate/floods" type="checkbox" class="restriction-fc sandgate" /> Floods<br />
+                <input id="http://example.com/dataset/sandgate/roads" type="checkbox" class="restriction-fc sandgate" /> Roads<br />
+                <!--
                 <div style="display:grid; grid-template-columns: 50% 50%;">
                     <div>
                         <p>
@@ -54,6 +60,7 @@
                         </p>
                     </div>
                 </div>
+                -->
                 <h4>4. Spatial relation</h4>
                 <p>Points on the map will be search for <em>within</em>, Features' geometry.</p>
                 <p>If you've drawn a bounding box, which relation do you want:</p>
