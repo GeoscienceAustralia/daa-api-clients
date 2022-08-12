@@ -1,4 +1,4 @@
-let m;
+export let m;
 export let shape;
 export let clearShapes;
 

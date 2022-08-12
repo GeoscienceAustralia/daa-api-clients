@@ -1,8 +1,8 @@
-import { shape, clearShapes } from "./map.js";
+import {shape, clearShapes, m} from "./map.js";
 
 function check(ths, cls) {
     const cbxs = document.getElementsByClassName(cls);
-    let setTo = false ;
+    let setTo = false;
     if (ths.checked) {
         setTo = true;
     }
@@ -88,14 +88,17 @@ export async function search() {
         let endpoint = 'https://linked.fsdf.org.au/sparql'
 
         let q =
-`PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+            `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?f
+SELECT ?f_uri ?geojson ?label
 WHERE {
-    ?f a geo:Feature ;
-       geo:hasGeometry/geo:asWKT ?wkt .
+    ?f_uri a geo:Feature ;
+        rdfs:label ?label ;
+       geo:hasGeometry/geo:asWKT ?wkt ;
+       geo:hasGeometry/geo:asGeoJSON ?geojson .
+
 ${make_query_fcs()}
 ${make_query_topo_filter()}
 }`
@@ -105,9 +108,33 @@ ${make_query_topo_filter()}
             document.getElementById('resultsList').style.display = 'block'
         } else {
             let r = await spql(endpoint, q)
-            console.log(r)
+            // console.log(r)
             if (r['results']['bindings'].length > 0) {
-                document.getElementById('resultsList').innerHTML = 'Check it!'
+                var infowindow = new google.maps.InfoWindow({
+                    pixelOffset: new google.maps.Size(0, -40)
+                });
+                document.getElementById('resultsList').innerHTML = '<h2>Map updated!</h2>'
+                for (var i = 0; i < r['results']['bindings'].length; i++) {
+                    let geojson = r['results']['bindings'][i]['geojson']['value']
+                    let f_uri = r['results']['bindings'][i]['f_uri']['value']
+                    let f_label = r['results']['bindings'][i]['label']['value']
+                    let feature_geojson = {
+                        "type": "Feature",
+                        "geometry": JSON.parse(geojson),
+                        "properties": {
+                            "uri": f_uri,
+                            "label": f_label
+                        }
+                    }
+                    m.data.addGeoJson(feature_geojson);
+                    m.data.addListener('mouseover', function (evt) {
+                        infowindow.setContent(
+                            `<a href="${evt.feature.getProperty('uri')}" target="_blank">${evt.feature.getProperty('label')}</a>`
+                        );
+                        infowindow.setPosition(evt.feature.getGeometry().get());
+                        infowindow.open(m);
+                    })
+                }
             } else {
                 document.getElementById('resultsList').innerHTML = '<em>No results found!</em>'
             }
@@ -129,7 +156,7 @@ function reset() {
 
     document.getElementById('spatial-contains').checked = true
 
-    document.getElementById('queryOnly').checked = true
+    document.getElementById('queryOnly').checked = false
 }
 
 window.check = check

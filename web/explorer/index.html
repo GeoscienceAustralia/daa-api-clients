@@ -5,11 +5,30 @@
     <title>DA Explorer</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/theme.css" />
     <script type="module" src="./map.js"></script>
     <script type="module" src="./form.js"></script>
 </head>
 <body>
+<header>
+    <div id="header-content">
+        <div id="header-content-left">
+            <a id="header-logo-link" href="https://www.ga.gov.au/home">
+                <img src="img/ga-logo.jpg" alt="GA logo">
+            </a>
+        </div>
+        <div id="header-content-right">
+            <div id="slogan">
+                Applying geoscience to Australia's most important challenges
+            </div>
+            <div id="header-nav">
+                <a class="header-nav-link" href="https://www.ga.gov.au/home"><i class="fas fa-home"></i></a>
+                <a class="header-nav-link" href="http://vocabs.ga.gov.au/">Vocabulary Registry</a>
+                <a class="header-nav-link" href="Applying geoscience to Australia's most important challenges ">Persistent Identity</a>
+            </div>
+        </div>
+    </div>
+</header>
     <div id="container" style="margin: 0 5px 0 5px;">
         <h1>Digital Atlas Data API Explorer</h1>
         <div style="display:grid; grid-template-columns:65% 35%; max-width:99%;">
@@ -66,7 +85,7 @@
                 <p>If you've drawn a bounding box, which relation do you want:</p>
                 <input id="spatial-contains" type="radio" name="spatial" checked /> <label for="spatial-contains">contains</label> <span style="font-size:smaller;">- Features' geometry fully contained by the box</span><br />
                 <input id="spatial-overlaps" type="radio" name="spatial" /> <label for="spatial-overlaps">overlaps</label> <span style="font-size:smaller;">- Features' geometry overlapped by the box</span>
-                <p style="font-size:smaller;"><input id="queryOnly" type="checkbox" checked /> Just show query, do not execute<br /></p>
+                <p style="font-size:smaller;"><input id="queryOnly" type="checkbox"/> Just show query, do not execute<br /></p>
                 <button onclick="search()">Search for Features</button>
                 <button onclick="reset()">Reset</button>
                 <p></p>
@@ -78,5 +97,21 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIaoFyutbNuJ85eXOmUb0xXqfY75wptMI&libraries=drawing&callback=initMap&v=weekly"
       defer
     ></script>
+<footer>
+    <div id="footer-content">
+        <div id="footer-content-top">
+            <a href="https://www.ga.gov.au/copyright" class="footer-nav-item">Copyright</a>
+            <a href="https://www.ga.gov.au/privacy" class="footer-nav-item">Privacy</a>
+            <a href="https://www.ga.gov.au/accessibility" class="footer-nav-item">Accessibility</a>
+            <a href="https://www.ga.gov.au/sitemap" class="footer-nav-item">Sitemap</a>
+            <a href="https://www.ga.gov.au/ips" class="footer-nav-item">Information Publication Scheme</a>
+            <a href="https://www.ga.gov.au/ips/foi" class="footer-nav-item">Freedom of Information</a>
+            <a href="https://www.ga.gov.au/contact-us" class="footer-nav-item">Contact Us</a>
+        </div>
+        <div id="footer-content-bottom">
+            We acknowledge the Traditional Owners of the country where we work throughout Australia. We acknowledge Aboriginal and Torres Strait Islander people's continuing connection to land, sea and community. We pay our respects to their elders past and present and emerging.
+        </div>
+    </div>
+</footer>
 </body>
 </html>
