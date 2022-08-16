@@ -24,7 +24,8 @@ function initMap() {
         fillColor: "green",
         fillOpacity: 0.35
     };
-    const markerOptions = {};
+    const markerOptions = {
+        icon: new google.maps.MarkerImage('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')};
 
     let drawingManager = new google.maps.drawing.DrawingManager({
         drawingControlOptions: {

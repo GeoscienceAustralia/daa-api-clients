@@ -54,7 +54,7 @@ function make_query_fcs() {
     const cbxs2 = document.querySelectorAll('.restriction-fc')
     for (var i = 0; i < cbxs2.length; i++) {
         if (cbxs2[i].checked) {
-            fc_restrictions.push(`<${cbxs2[i].id}> rdfs:member ?f .`)
+            fc_restrictions.push(`<${cbxs2[i].id}> rdfs:member ?f_uri .`)
         }
     }
 
@@ -72,6 +72,9 @@ function make_query_topo_filter() {
         geosparql = `    FILTER (geof:sfContains("${shape}"^^geo:wktLiteral, ?wkt))`
     } else if (document.getElementById('spatial-within').checked) {
         geosparql = `    FILTER (geof:sfWithin("${shape}"^^geo:wktLiteral, ?wkt))`
+    } else if (document.getElementById('spatial-nearby').checked) {
+        let radius = document.getElementById('nearby-radius').value
+        geosparql = `    FILTER (spatialF:nearby("${shape}"^^geo:wktLiteral, ?wkt, ${radius}, unit:kilometre))`
     } else {
         geosparql = `    FILTER (geof:sfOverlaps("${shape}"^^geo:wktLiteral, ?wkt))`
     }
@@ -84,12 +87,15 @@ export async function search() {
         alert("You have not marked a point or a square on the map!")
     } else {
         let endpoint = 'https://linked.fsdf.org.au/sparql'
+        let sparql_limit = document.getElementById('max-results').value
         document.getElementById('resultsList').style.display = 'block'
         document.getElementById('resultsList').innerHTML = '<h2>Searching for features...</h2>'
         let q =
             `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX spatialF: <http://jena.apache.org/function/spatial#>
+PREFIX unit: <http://www.opengis.net/def/uom/OGC/1.0/>
 
 SELECT ?f_uri ?geojson ?label
 WHERE {
@@ -100,7 +106,9 @@ WHERE {
 
 ${make_query_fcs()}
 ${make_query_topo_filter()}
-}`
+}
+LIMIT ${sparql_limit}
+`
 
         if (document.getElementById('queryOnly').checked) {
             document.getElementById('resultsList').innerHTML = q.replaceAll('<', '&lt;')
@@ -109,8 +117,8 @@ ${make_query_topo_filter()}
             let r = await spql(endpoint, q)
 
             // console.log(r)
-            if (r['results']['bindings'].length > 0) {
-                document.getElementById('resultsList').innerHTML = '<h2>Map updated!</h2>'
+            let f_count = r['results']['bindings'].length
+            if (f_count > 0) {
                 for (var i = 0; i < r['results']['bindings'].length; i++) {
                     let geojson = r['results']['bindings'][i]['geojson']['value']
                     let f_uri = r['results']['bindings'][i]['f_uri']['value']
@@ -125,22 +133,21 @@ ${make_query_topo_filter()}
                     }
                     m.data.addGeoJson(feature_geojson);
                 }
+                document.getElementById('resultsList').innerHTML = `<h2>Added ${f_count} features to map</h2>`
+                feature_infowindow()
+                var bounds = new google.maps.LatLngBounds();
+                m.data.forEach(function (feature) {
+                    feature.getGeometry().forEachLatLng(function (latlng) {
+                        bounds.extend(latlng);
+                    });
+                });
+                m.fitBounds(bounds);
             } else {
                 document.getElementById('resultsList').innerHTML = '<em>No results found!</em>'
             }
             document.getElementById('resultsList').style.display = 'block'
         }
     }
-    var infowindow = new google.maps.InfoWindow({
-        pixelOffset: new google.maps.Size(0, -40)
-    });
-    m.data.addListener('mouseover', function (evt) {
-        infowindow.setContent(
-            `<a href="${evt.feature.getProperty('uri')}" target="_blank">${evt.feature.getProperty('label')}</a>`
-        );
-        infowindow.setPosition(evt.feature.getGeometry().get());
-        infowindow.open(m);
-    })
 }
 
 export async function select_object() {
@@ -156,21 +163,18 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?wkt ?geojson ?label
 WHERE {
     \<${object_uri}\> a geo:Feature ;
-        rdfs:label ?label ;
        geo:hasGeometry/geo:asWKT ?wkt ;
        geo:hasGeometry/geo:asGeoJSON ?geojson .
+       OPTIONAL {\<${object_uri}\> rdfs:label ?given_label }
+       BIND(COALESCE(?given_label, "${object_uri}") AS ?label)
 }`
     let r = await spql(endpoint, q)
     if (r['results']['bindings'].length > 0) {
-        var infowindow = new google.maps.InfoWindow({
-            pixelOffset: new google.maps.Size(0, -40)
-        });
         document.getElementById('resultsList').innerHTML = '<h2>Map updated!</h2>'
         for (var i = 0; i < r['results']['bindings'].length; i++) {
             let geojson = r['results']['bindings'][i]['geojson']['value']
             let f_label = r['results']['bindings'][i]['label']['value']
             let feature_wkt = r['results']['bindings'][i]['wkt']['value']
-            setShape(feature_wkt)
             let feature_geojson = {
                 "type": "Feature",
                 "geometry": JSON.parse(geojson),
@@ -186,20 +190,27 @@ WHERE {
                     bounds.extend(latlng);
                 });
             });
-
+            setShape(feature_wkt)
             m.fitBounds(bounds);
-            m.data.addListener('mouseover', function (evt) {
-                infowindow.setContent(
-                    `<a href="${evt.feature.getProperty('uri')}" target="_blank">${evt.feature.getProperty('label')}</a>`
-                );
-                infowindow.setPosition(evt.feature.getGeometry().get());
-                infowindow.open(m);
-            })
         }
     } else {
         document.getElementById('resultsList').innerHTML = '<em>No results found!</em>'
     }
 }
+
+function feature_infowindow() {
+    var infowindow = new google.maps.InfoWindow({
+        pixelOffset: new google.maps.Size(0, -40)
+    });
+    m.data.addListener('mouseover', function (evt) {
+        infowindow.setContent(
+            `<a href="${evt.feature.getProperty('uri')}" target="_blank">${evt.feature.getProperty('label')}</a>`
+        );
+        infowindow.setPosition(evt.latLng);
+        infowindow.open(m);
+    })
+}
+
 
 function reset() {
     clearShapes()

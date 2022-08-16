@@ -80,27 +80,138 @@
             </div>
             -->
             <h4>2. Spatial relation</h4>
-            <p>Select the spatial relation to look for between the bounding box, point, or selected feature and the features being searched.</p>
+            <p>Select the spatial relation to look for between the bounding box, point, or selected feature and the
+                features being searched.</p>
             <p><em>For example, to find features contained by a bounding box you have drawn, select contains.</em></p>
-            <input id="spatial-contains" type="radio" name="spatial" checked/> <label
+            <div>
+                <input id="spatial-nearby" type="radio" name="spatial" checked/>
+                <label for="spatial-nearby">nearby - within</label>
+                <input id="nearby-radius" type="text" style="width:20px" value="5"/>
+                <label for="spatial-nearby">km</label>
+            </div>
+            <input id="spatial-contains" type="radio" name="spatial"/> <label
                 for="spatial-contains">contains</label>
             <br>
             <input id="spatial-overlaps" type="radio" name="spatial"/> <label for="spatial-overlaps">overlaps</label>
             <br>
             <input id="spatial-within" type="radio" name="spatial"/> <label for="spatial-within">within</label>
+            <br>
+            <p></p>
             <h4>3. Filter by feature collection</h4>
             <p>Filter the types of features to return by Feature Collection:</p>
-            <input id="http://example.com/dataset/sandgate" type="checkbox" class="restriction-dataset"
-                   onchange="check(this, 'sandgate')"/> Sandgate demo dataset<br/>
-            <input id="http://example.com/dataset/sandgate/catchments" type="checkbox" class="restriction-fc sandgate"/>
-            Catchments<br/>
-            <input id="http://example.com/dataset/sandgate/facilities" type="checkbox" class="restriction-fc sandgate"/>
-            Facilities<br/>
-            <input id="http://example.com/dataset/sandgate/floods" type="checkbox" class="restriction-fc sandgate"/>
-            Floods<br/>
-            <input id="http://example.com/dataset/sandgate/roads" type="checkbox" class="restriction-fc sandgate"/>
-            Roads<br/>
             <p></p>
+            <table>
+                <tr colspan="2">
+                    <td style="border:1px solid black;border-collapse:collapse;">
+                        <table>
+                            <tr>
+                                <td><input id="http://example.com/dataset/sandgate" type="checkbox"
+                                           class="restriction-dataset"
+                                           onchange="check(this, 'sandgate')"/> Sandgate demo dataset<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input id="http://example.com/dataset/sandgate/catchments"
+                                                              type="checkbox" class="restriction-fc sandgate"/>
+                                    Sandgate Catchments<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input id="http://example.com/dataset/sandgate/facilities"
+                                                              type="checkbox" class="restriction-fc sandgate"/>
+                                    Sandgate Facilities<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input id="http://example.com/dataset/sandgate/floods"
+                                                              type="checkbox" class="restriction-fc sandgate"/>
+                                    Sandgate Floods<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input id="http://example.com/dataset/sandgate/roads"
+                                                              type="checkbox" class="restriction-fc sandgate"/>
+                                    Sandgate Roads<br/></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="border:1px solid black;border-collapse:collapse;">
+                        <table>
+                            <tr>
+                                <td><input id="https://linked.data.gov.au/dataset/facilities" type="checkbox"
+                                           class="restriction-dataset"
+                                           onchange="check(this, 'facilities')"/> Facilities<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input
+                                        id="https://linked.data.gov.au/dataset/facilities/education" type="checkbox"
+                                        class="restriction-fc facilities"/>
+                                    Education<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input id="https://linked.data.gov.au/dataset/facilities/medical"
+                                                              type="checkbox"
+                                                              class="restriction-fc facilities"/>
+                                    Medical<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input
+                                        id="https://linked.data.gov.au/dataset/facilities/emergmanfacil" type="checkbox"
+                                        class="restriction-fc facilities"/>
+                                    Emergency Management<br/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr colspan="2">
+                    <td style="border:1px solid black;border-collapse:collapse;">
+                        <table>
+                            <tr>
+                                <td><input id="https://linked.data.gov.au/dataset/power-infrastructure" type="checkbox"
+                                           class="restriction-dataset"
+                                           onchange="check(this, 'electricalinfra')"/> Electrical Infrastructure<br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input
+                                        id="https://linked.data.gov.au/dataset/power-infrastructure/power-stations"
+                                        type="checkbox"
+                                        class="restriction-fc electricalinfra"/>
+                                    Power Stations<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input
+                                        id="https://linked.data.gov.au/dataset/power-infrastructure/transmission-lines"
+                                        type="checkbox"
+                                        class="restriction-fc electricalinfra"/>
+                                    Transmission Lines<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input
+                                        id="https://linked.data.gov.au/dataset/power-infrastructure/power-substations"
+                                        type="checkbox"
+                                        class="restriction-fc electricalinfra"/>
+                                    Power Substations<br/></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="border:1px solid black;border-collapse:collapse;">
+                        <table>
+                            <tr>
+                                <td><input id="https://linked.data.gov.au/dataset/placenames" type="checkbox"
+                                           class="restriction-dataset"
+                                           onchange="check(this, 'placenames')"/> Placenames<br/></td>
+                            </tr>
+                            <tr>
+                                <td>&NonBreakingSpace; <input
+                                        id="https://linked.data.gov.au/dataset/placenames/places"
+                                        type="checkbox"
+                                        class="restriction-fc placenames"/>
+                                    Places<br/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <h4>4. Limit number of results</h4>
+            <label for="max-results">Maximum number of results to return:</label>
+            <input id="max-results" type="text" style="width:40px" value="10"/>
             <p style="font-size:smaller;"><input id="queryOnly" type="checkbox"/> Just show query, do not execute<br/>
             </p>
             <button onclick="search()">Search</button>
