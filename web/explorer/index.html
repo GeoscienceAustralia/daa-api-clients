@@ -5,7 +5,7 @@
     <title>DA Explorer</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" type="text/css" href="./css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="./css/theme.css"/>
     <script type="module" src="./map.js"></script>
     <script type="module" src="./form.js"></script>
 </head>
@@ -24,79 +24,97 @@
             <div id="header-nav">
                 <a class="header-nav-link" href="https://www.ga.gov.au/home"><i class="fas fa-home"></i></a>
                 <a class="header-nav-link" href="http://vocabs.ga.gov.au/">Vocabulary Registry</a>
-                <a class="header-nav-link" href="Applying geoscience to Australia's most important challenges ">Persistent Identity</a>
+                <a class="header-nav-link" href="Applying geoscience to Australia's most important challenges ">Persistent
+                    Identity</a>
             </div>
         </div>
     </div>
 </header>
-    <div id="container" style="margin: 0 5px 0 5px;">
-        <h1>Digital Atlas Data API Explorer</h1>
-        <div style="display:grid; grid-template-columns:65% 35%; max-width:99%;">
-            <div id="map" style="grid-column:1;"></div>
-            <div id="form" style="grid-column:2; min-width:300px; max-width:450px; padding-left:10px; background-color: #eee;">
-                <h4>1. Location</h4>
-                <p>Mark a point or a bounding box on the map or <em>or</em> enter the IRI of an FSDF Feature to use its geometry.</p>
-                <input id="location-feature" type="text" style="width:400px" placeholder="https://linked.data.gov.au/dataset/..." />
-                <h4>2. Feature Collections</h4>
-                <p>Select Feature Collections you wish to search within:</p>
-                <input id="http://example.com/dataset/sandgate" type="checkbox" class="restriction-dataset" onchange="check(this, 'sandgate')" /> Sandgate demo dataset<br />
-                <input id="http://example.com/dataset/sandgate/catchments" type="checkbox" class="restriction-fc sandgate" /> Catchments<br />
-                <input id="http://example.com/dataset/sandgate/facilities" type="checkbox" class="restriction-fc sandgate" /> Facilities<br />
-                <input id="http://example.com/dataset/sandgate/floods" type="checkbox" class="restriction-fc sandgate" /> Floods<br />
-                <input id="http://example.com/dataset/sandgate/roads" type="checkbox" class="restriction-fc sandgate" /> Roads<br />
-                <!--
-                <div style="display:grid; grid-template-columns: 50% 50%;">
-                    <div>
-                        <p>
-                            <input id="https://linked.data.gov.au/dataset/asgsed3" type="checkbox" class="restriction-dataset" onchange="check(this, 'asgs')" /> ASGS<br />
-                            <input id="https://linked.data.gov.au/dataset/asgsed3/SA4" type="checkbox" class="restriction-fc asgs" /> SA4s<br />
-                            <input id="https://linked.data.gov.au/dataset/asgsed3/SA3" type="checkbox" class="restriction-fc asgs" /> SA3s<br />
-                            <input id="https://linked.data.gov.au/dataset/asgsed3/SA2" type="checkbox" class="restriction-fc asgs" /> SA2s<br />
-                            <input id="https://linked.data.gov.au/dataset/asgsed3/SA1" type="checkbox" class="restriction-fc asgs" /> SA1s<br />
-                            <input id="https://linked.data.gov.au/dataset/asgsed3/MB" type="checkbox" class="restriction-fc asgs" /> Mesh Blocks
-                        </p>
-                        <p>
-                            <input id="https://linked.data.gov.au/dataset/geofabric" type="checkbox" class="restriction-dataset" onchange="check(this, 'geofabric')" /> Geofabric<br />
-                            <input id="https://linked.data.gov.au/dataset/geofabric/fc/drainagedivisions" type="checkbox" class="restriction-fc geofabric" /> Drainage Divisions<br />
-                            <input id="https://linked.data.gov.au/dataset/geofabric/fc/riverregions" type="checkbox" class="restriction-fc geofabric" /> River Regions<br />
-                            <input id="https://linked.data.gov.au/dataset/geofabric/fc/catchments" type="checkbox" class="restriction-fc geofabric" /> Contracted Catchments
-                        </p>
-                    </div>
-                    <div>
-                        <p>
-                            <input id="https://linked.data.gov.au/dataset/fsdf" type="checkbox" class="restriction-dataset" onchange="check(this, 'fsdf')" /> FSDF<br />
-                            <input id="https://linked.data.gov.au/dataset/fsdf/SA4" type="checkbox" class="restriction-fc fsdf" /> SA4s<br />
-                            <input id="https://linked.data.gov.au/dataset/fsdf/SA3" type="checkbox" class="restriction-fc fsdf" /> SA3s<br />
-                            <input id="https://linked.data.gov.au/dataset/fsdf/SA2" type="checkbox" class="restriction-fc fsdf" /> SA2s<br />
-                            <input id="https://linked.data.gov.au/dataset/fsdf/SA1" type="checkbox" class="restriction-fc fsdf" /> SA1s<br />
-                            <input id="https://linked.data.gov.au/dataset/fsdf/MB" type="checkbox" class="restriction-fc fsdf" /> Mesh Blocks
-                        </p>
-                        <p>
-                            <input id="https://linked.data.gov.au/dataset/gnaf" type="checkbox" class="restriction-dataset" onchange="check(this, 'gnaf')" /> G-NAF<br />
-                            <input id="https://linked.data.gov.au/dataset/gnaf/address" type="checkbox" class="restriction-fc gnaf" /> Addresses<br />
-                            <input id="https://linked.data.gov.au/dataset/gnaf/streetLocality" type="checkbox" class="restriction-fc gnaf" /> Street Localities<br />
-                            <input id="https://linked.data.gov.au/dataset/gnaf/locality" type="checkbox" class="restriction-fc gnaf" /> Localities
-                        </p>
-                    </div>
+<div id="container" style="margin: 0 5px 0 5px;">
+    <h1>Digital Atlas Data API Explorer</h1>
+    <div style="display:grid; grid-template-columns:65% 35%; max-width:99%;">
+        <div id="map" style="grid-column:1;"></div>
+        <div id="form"
+             style="grid-column:2; min-width:300px; max-width:450px; padding-left:10px; background-color: #eee;">
+            <h4>1. Location</h4>
+            <p>To search for features, first draw a bounding box on the map, select a point on the map <em>or</em> enter
+                the IRI of an FSDF Feature to use its geometry.</p>
+            <input id="location-feature" type="text" style="width:400px"
+                   placeholder="https://linked.data.gov.au/dataset/..."/>
+            <p></p>
+            <button onclick="select_object()">Select Feature</button>
+            <!--
+            <div style="display:grid; grid-template-columns: 50% 50%;">
+                <div>
+                    <p>
+                        <input id="https://linked.data.gov.au/dataset/asgsed3" type="checkbox" class="restriction-dataset" onchange="check(this, 'asgs')" /> ASGS<br />
+                        <input id="https://linked.data.gov.au/dataset/asgsed3/SA4" type="checkbox" class="restriction-fc asgs" /> SA4s<br />
+                        <input id="https://linked.data.gov.au/dataset/asgsed3/SA3" type="checkbox" class="restriction-fc asgs" /> SA3s<br />
+                        <input id="https://linked.data.gov.au/dataset/asgsed3/SA2" type="checkbox" class="restriction-fc asgs" /> SA2s<br />
+                        <input id="https://linked.data.gov.au/dataset/asgsed3/SA1" type="checkbox" class="restriction-fc asgs" /> SA1s<br />
+                        <input id="https://linked.data.gov.au/dataset/asgsed3/MB" type="checkbox" class="restriction-fc asgs" /> Mesh Blocks
+                    </p>
+                    <p>
+                        <input id="https://linked.data.gov.au/dataset/geofabric" type="checkbox" class="restriction-dataset" onchange="check(this, 'geofabric')" /> Geofabric<br />
+                        <input id="https://linked.data.gov.au/dataset/geofabric/fc/drainagedivisions" type="checkbox" class="restriction-fc geofabric" /> Drainage Divisions<br />
+                        <input id="https://linked.data.gov.au/dataset/geofabric/fc/riverregions" type="checkbox" class="restriction-fc geofabric" /> River Regions<br />
+                        <input id="https://linked.data.gov.au/dataset/geofabric/fc/catchments" type="checkbox" class="restriction-fc geofabric" /> Contracted Catchments
+                    </p>
                 </div>
-                -->
-                <h4>4. Spatial relation</h4>
-                <p>Points on the map will be search for <em>within</em>, Features' geometry.</p>
-                <p>If you've drawn a bounding box, which relation do you want:</p>
-                <input id="spatial-contains" type="radio" name="spatial" checked /> <label for="spatial-contains">contains</label> <span style="font-size:smaller;">- Features' geometry fully contained by the box</span><br />
-                <input id="spatial-overlaps" type="radio" name="spatial" /> <label for="spatial-overlaps">overlaps</label> <span style="font-size:smaller;">- Features' geometry overlapped by the box</span>
-                <p style="font-size:smaller;"><input id="queryOnly" type="checkbox"/> Just show query, do not execute<br /></p>
-                <button onclick="search()">Search for Features</button>
-                <button onclick="reset()">Reset</button>
-                <p></p>
+                <div>
+                    <p>
+                        <input id="https://linked.data.gov.au/dataset/fsdf" type="checkbox" class="restriction-dataset" onchange="check(this, 'fsdf')" /> FSDF<br />
+                        <input id="https://linked.data.gov.au/dataset/fsdf/SA4" type="checkbox" class="restriction-fc fsdf" /> SA4s<br />
+                        <input id="https://linked.data.gov.au/dataset/fsdf/SA3" type="checkbox" class="restriction-fc fsdf" /> SA3s<br />
+                        <input id="https://linked.data.gov.au/dataset/fsdf/SA2" type="checkbox" class="restriction-fc fsdf" /> SA2s<br />
+                        <input id="https://linked.data.gov.au/dataset/fsdf/SA1" type="checkbox" class="restriction-fc fsdf" /> SA1s<br />
+                        <input id="https://linked.data.gov.au/dataset/fsdf/MB" type="checkbox" class="restriction-fc fsdf" /> Mesh Blocks
+                    </p>
+                    <p>
+                        <input id="https://linked.data.gov.au/dataset/gnaf" type="checkbox" class="restriction-dataset" onchange="check(this, 'gnaf')" /> G-NAF<br />
+                        <input id="https://linked.data.gov.au/dataset/gnaf/address" type="checkbox" class="restriction-fc gnaf" /> Addresses<br />
+                        <input id="https://linked.data.gov.au/dataset/gnaf/streetLocality" type="checkbox" class="restriction-fc gnaf" /> Street Localities<br />
+                        <input id="https://linked.data.gov.au/dataset/gnaf/locality" type="checkbox" class="restriction-fc gnaf" /> Localities
+                    </p>
+                </div>
             </div>
-            <div id="resultsList" style="grid-column:1; display:none; background-color: #eee; padding:10px; text-align:left; font-family: monospace; white-space: pre-wrap;"></div>
+            -->
+            <h4>2. Spatial relation</h4>
+            <p>Select the spatial relation to look for between the bounding box, point, or selected feature and the features being searched.</p>
+            <p><em>For example, to find features contained by a bounding box you have drawn, select contains.</em></p>
+            <input id="spatial-contains" type="radio" name="spatial" checked/> <label
+                for="spatial-contains">contains</label>
+            <br>
+            <input id="spatial-overlaps" type="radio" name="spatial"/> <label for="spatial-overlaps">overlaps</label>
+            <br>
+            <input id="spatial-within" type="radio" name="spatial"/> <label for="spatial-within">within</label>
+            <h4>3. Filter by feature collection</h4>
+            <p>Filter the types of features to return by Feature Collection:</p>
+            <input id="http://example.com/dataset/sandgate" type="checkbox" class="restriction-dataset"
+                   onchange="check(this, 'sandgate')"/> Sandgate demo dataset<br/>
+            <input id="http://example.com/dataset/sandgate/catchments" type="checkbox" class="restriction-fc sandgate"/>
+            Catchments<br/>
+            <input id="http://example.com/dataset/sandgate/facilities" type="checkbox" class="restriction-fc sandgate"/>
+            Facilities<br/>
+            <input id="http://example.com/dataset/sandgate/floods" type="checkbox" class="restriction-fc sandgate"/>
+            Floods<br/>
+            <input id="http://example.com/dataset/sandgate/roads" type="checkbox" class="restriction-fc sandgate"/>
+            Roads<br/>
+            <p></p>
+            <p style="font-size:smaller;"><input id="queryOnly" type="checkbox"/> Just show query, do not execute<br/>
+            </p>
+            <button onclick="search()">Search</button>
+            <button onclick="reset()">Reset</button>
+            <p></p>
         </div>
+        <div id="resultsList"
+             style="grid-column:1; display:none; background-color: #eee; padding:10px; text-align:left; font-family: monospace; white-space: pre-wrap;"></div>
     </div>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIaoFyutbNuJ85eXOmUb0xXqfY75wptMI&libraries=drawing&callback=initMap&v=weekly"
-      defer
-    ></script>
+</div>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIaoFyutbNuJ85eXOmUb0xXqfY75wptMI&libraries=drawing&callback=initMap&v=weekly"
+        defer
+></script>
 <footer>
     <div id="footer-content">
         <div id="footer-content-top">
@@ -109,7 +127,9 @@
             <a href="https://www.ga.gov.au/contact-us" class="footer-nav-item">Contact Us</a>
         </div>
         <div id="footer-content-bottom">
-            We acknowledge the Traditional Owners of the country where we work throughout Australia. We acknowledge Aboriginal and Torres Strait Islander people's continuing connection to land, sea and community. We pay our respects to their elders past and present and emerging.
+            We acknowledge the Traditional Owners of the country where we work throughout Australia. We acknowledge
+            Aboriginal and Torres Strait Islander people's continuing connection to land, sea and community. We pay our
+            respects to their elders past and present and emerging.
         </div>
     </div>
 </footer>

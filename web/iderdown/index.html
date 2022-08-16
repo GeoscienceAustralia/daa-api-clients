@@ -48,7 +48,8 @@
         <div class="my-3">
             <button type="button" id="test" class="btn btn-primary" onclick="get_contained_fcs()">Check available contained classes</button>
         </div>
-        <textarea id="containedClasses" style="display:none; width:600px; height:100px; font-family:monospace"></textarea>
+        <div id="containedClasses" style="display:none; width:600px; height:100px; font-family:monospace"></div>
+<!--        <textarea id="containedClasses" style="display:none; width:600px; height:100px; font-family:monospace"></textarea>-->
         <h4>3. Select the contained Feature Class</h4>
         <p><em>(Copy and paste one of the results from above)</em></p>
         <input type="text" id="fcIri" style="width:400px;"/>
@@ -59,7 +60,8 @@
         <div class="my-3">
             <button type="button" id="gc" class="btn btn-primary" onclick="get_contained()">Get Contained</button>
         </div>
-        <textarea id="results" style="display:none; width:600px; height:100px; font-family:monospace"></textarea>
+<!--        <textarea id="results" style="display:none; width:600px; height:100px; font-family:monospace"></textarea>-->
+        <div id="results" style="display:none; width:600px; height:100px; font-family:monospace"></div>
         <p></p>
         <p></p>
         <script>
@@ -158,7 +160,7 @@
 
             async function get_contained_fcs() {
                 document.getElementById('containedClasses').style.display = 'none'
-                document.getElementById('containedClasses').value = ''
+                document.getElementById('containedClasses').innerHTML = ''
 
                 console.log('get_contained_fcs()')
                 let endpoint = get_endpoint()
@@ -179,7 +181,7 @@
                 if (r['results']['bindings'].length > 0) {
                     let cls = r['results']['bindings'][0].fc['value']
                     containedClasses[cls].forEach(function(obj) {
-                        document.getElementById('containedClasses').value += obj + '\n'
+                        document.getElementById('containedClasses').innerHTML += `<a href="${obj}" target="_blank">${obj}</a><br>`
                     });
                     document.getElementById('containedClasses').style.display = 'block'
                 }
@@ -188,7 +190,7 @@
             async function get_contained() {
                 let res = document.getElementById("results")
                 res.style.display = 'none'
-                res.value = ''
+                res.innerHTML = ''
 
                 let url = get_endpoint()
                 let containerIri = get_container_iri()
@@ -214,10 +216,10 @@
                 let r = await spql(url, q)
                 r['results']['bindings'].forEach(obj => {
                     Object.entries(obj).forEach(([key, value]) => {
-                        res.value += `${value['value']}\n`
+                        // res.value += `${value['value']}\n`
+                        document.getElementById('results').innerHTML += `<a href="${value['value']}" target="_blank">${value['value']}</a><br>`
                     })
                 });
-
                 res.style.display = 'block'
             }
         </script>

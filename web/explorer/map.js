@@ -1,6 +1,7 @@
 export let m;
 export let shape;
 export let clearShapes;
+export let setShape;
 
 function initMap() {
     m = new google.maps.Map(
@@ -11,6 +12,10 @@ function initMap() {
             zoom: 4,
         }
     );
+
+    setShape = (value) => {
+      shape = value;
+    }
 
     const shapeOptions = {
         strokeColor: "green",
