@@ -227,7 +227,7 @@ function reset() {
 
     document.getElementById('resultsList').style.display = 'none'
 
-    document.getElementById('spatial-contains').checked = true
+    document.getElementById('spatial-nearby').checked = true
 
     document.getElementById('queryOnly').checked = false
 }
