@@ -96,13 +96,18 @@ PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX spatialF: <http://jena.apache.org/function/spatial#>
 PREFIX unit: <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT ?f_uri ?geojson ?label
+SELECT ?f_uri ?geojson ?label ?fc_label
 WHERE {
     ?f_uri a geo:Feature ;
         rdfs:label ?label ;
        geo:hasGeometry/geo:asWKT ?wkt ;
-       geo:hasGeometry/geo:asGeoJSON ?geojson .
+       geo:hasGeometry/geo:asGeoJSON ?geojson ;
+       OPTIONAL {?f_uri dcterms:isPartOf ?fc .
+                ?fc rdfs:label\|dcterms:title ?potential_fc_label .}
+        BIND(COALESCE(?potential_fc_label, "") AS ?fc_label)
+        
 
 ${make_query_fcs()}
 ${make_query_topo_filter()}
@@ -119,9 +124,11 @@ LIMIT ${sparql_limit}
             // console.log(r)
             let f_count = r['results']['bindings'].length
             if (f_count > 0) {
+                let htmlstring = '<table><tr><th></th><th>Label</th><th>Feature Collection</th><th>URI</th></tr>'
                 for (var i = 0; i < r['results']['bindings'].length; i++) {
                     let geojson = r['results']['bindings'][i]['geojson']['value']
                     let f_uri = r['results']['bindings'][i]['f_uri']['value']
+                    let fc_label = r['results']['bindings'][i]['fc_label']['value']
                     let f_label = r['results']['bindings'][i]['label']['value']
                     let feature_geojson = {
                         "type": "Feature",
@@ -131,9 +138,12 @@ LIMIT ${sparql_limit}
                             "label": f_label
                         }
                     }
+                    let counter = i + 1
                     m.data.addGeoJson(feature_geojson);
+                    htmlstring += '<tr><td>' + counter + '</td><td>' + f_label + '</td><td>' + fc_label + '</td><td><a href="' + f_uri + '" target="_blank">' + f_uri + '</a></td></tr>'
                 }
-                document.getElementById('resultsList').innerHTML = `<h2>Added ${f_count} features to map</h2>`
+                htmlstring += '</table>'
+                document.getElementById('resultsList').innerHTML = htmlstring
                 feature_infowindow()
                 var bounds = new google.maps.LatLngBounds();
                 m.data.forEach(function (feature) {
@@ -204,7 +214,8 @@ function feature_infowindow() {
     });
     m.data.addListener('mouseover', function (evt) {
         infowindow.setContent(
-            `<a href="${evt.feature.getProperty('uri')}" target="_blank">${evt.feature.getProperty('label')}</a>`
+            `<a href="${evt.feature.getProperty('uri')}" target="_blank">${evt.feature.getProperty('label')}</a><br>
+        <small>URI: ${evt.feature.getProperty('uri')}</small>`
         );
         infowindow.setPosition(evt.latLng);
         infowindow.open(m);
