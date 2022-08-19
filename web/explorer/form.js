@@ -17,7 +17,7 @@ async function spql(url, query) {
     url2.searchParams.append("query", query)
     let options = {
         headers: {
-            'Content-Type': 'application/sparql-results+json',
+            'Accept': 'application/sparql-results+json',
         },
     }
 
@@ -86,7 +86,7 @@ export async function search() {
     if (!shape) {
         alert("You have not marked a point or a square on the map!")
     } else {
-        let endpoint = 'https://linked.fsdf.org.au/sparql'
+        let endpoint = 'http://digital-atlas-lb-1137864764.ap-southeast-2.elb.amazonaws.com:3040/fsdf'
         let sparql_limit = document.getElementById('max-results').value
         document.getElementById('resultsList').style.display = 'block'
         document.getElementById('resultsList').innerHTML = '<h2>Searching for features...</h2>'
@@ -163,7 +163,7 @@ LIMIT ${sparql_limit}
 export async function select_object() {
     let object_uri = document.getElementById('location-feature').value
 
-    let endpoint = 'https://linked.fsdf.org.au/sparql'
+    let endpoint = 'http://digital-atlas-lb-1137864764.ap-southeast-2.elb.amazonaws.com:3040/fsdf'
 
     let q =
         `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
