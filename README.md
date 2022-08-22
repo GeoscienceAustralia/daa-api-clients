@@ -30,6 +30,10 @@ These Notebooks are aimed at two things:
 
 # Use
 
+## Explorer:
+Run the `web/explorer/index.html` through an IDE, such as PyCharm (right click, 'Run').
+
+## Iderdown:
 These Notebooks can be run locally, if you have a Jupyter Notebooks setup on your desktop, or they can be run online using:
 
 <!-- * https://mybinder.org/v2/gh/surroundaustralia/daa-api-clients/fcbb9d511a6f441f8cd65c19af4ee3d2de5a8f08?urlpath=lab%2Ftree%2Fnotebooks%2FIderDown.ipynb -->
