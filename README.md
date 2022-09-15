@@ -11,10 +11,10 @@ The particular targets of these client Notebooks are a series of SpacePrez APIS 
 
 The targeted APIs are:
 
-1. [Australian Statistical Geographies Standard (ASGS) 2021]() - _coming!_
-2. [Australian Hydrological Geospatial Fabric (Geofabric) v3]() - _coming!_
-3. [Geocoded National Address File (G-NAF)]() - _coming!_
-4. [FSDF Datasets]() - _coming!_
+1. [Australian Statistical Geographies Standard (ASGS) 2021]()
+2. [Australian Hydrological Geospatial Fabric (Geofabric) v3]()
+3. [Geocoded National Address File (G-NAF)]()
+4. [FSDF Datasets]() 
 
 
 ## Client Aims
