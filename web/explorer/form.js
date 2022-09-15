@@ -98,12 +98,11 @@ PREFIX spatialF: <http://jena.apache.org/function/spatial#>
 PREFIX unit: <http://www.opengis.net/def/uom/OGC/1.0/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT ?f_uri ?geojson ?label ?fc_label
+SELECT ?f_uri ?wkt ?label ?fc_label
 WHERE {
     ?f_uri a geo:Feature ;
         rdfs:label ?label ;
        geo:hasGeometry/geo:asWKT ?wkt ;
-       geo:hasGeometry/geo:asGeoJSON ?geojson ;
        OPTIONAL {?f_uri dcterms:isPartOf ?fc .
                 ?fc rdfs:label\|dcterms:title ?potential_fc_label .}
         BIND(COALESCE(?potential_fc_label, "") AS ?fc_label)
@@ -126,13 +125,14 @@ LIMIT ${sparql_limit}
             if (f_count > 0) {
                 let htmlstring = '<table><tr><th></th><th>Label</th><th>Feature Collection</th><th>URI</th></tr>'
                 for (var i = 0; i < r['results']['bindings'].length; i++) {
-                    let geojson = r['results']['bindings'][i]['geojson']['value']
+                    let wkt = r['results']['bindings'][i]['wkt']['value']
                     let f_uri = r['results']['bindings'][i]['f_uri']['value']
                     let fc_label = r['results']['bindings'][i]['fc_label']['value']
                     let f_label = r['results']['bindings'][i]['label']['value']
+                    let geojson = Terraformer.wktToGeoJSON(wkt);
                     let feature_geojson = {
                         "type": "Feature",
-                        "geometry": JSON.parse(geojson),
+                        "geometry": geojson,
                         "properties": {
                             "uri": f_uri,
                             "label": f_label
@@ -170,11 +170,10 @@ export async function select_object() {
 PREFIX geof: <http://www.opengis.net/def/function/geosparql/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?wkt ?geojson ?label
+SELECT ?wkt ?label
 WHERE {
     \<${object_uri}\> a geo:Feature ;
        geo:hasGeometry/geo:asWKT ?wkt ;
-       geo:hasGeometry/geo:asGeoJSON ?geojson .
        OPTIONAL {\<${object_uri}\> rdfs:label ?given_label }
        BIND(COALESCE(?given_label, "${object_uri}") AS ?label)
 }`
@@ -182,12 +181,12 @@ WHERE {
     if (r['results']['bindings'].length > 0) {
         document.getElementById('resultsList').innerHTML = '<h2>Map updated!</h2>'
         for (var i = 0; i < r['results']['bindings'].length; i++) {
-            let geojson = r['results']['bindings'][i]['geojson']['value']
             let f_label = r['results']['bindings'][i]['label']['value']
             let feature_wkt = r['results']['bindings'][i]['wkt']['value']
+            let geojson = Terraformer.wktToGeoJSON(feature_wkt);
             let feature_geojson = {
                 "type": "Feature",
-                "geometry": JSON.parse(geojson),
+                "geometry": geojson,
                 "properties": {
                     "uri": object_uri,
                     "label": f_label
